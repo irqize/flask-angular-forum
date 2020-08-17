@@ -1,0 +1,6 @@
+.vscode/
+server/venv
+server/__pycache__
+client/node_modules
+server/lib/__pycache__
+server/forum.sqlite
