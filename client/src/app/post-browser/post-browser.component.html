@@ -1,1 +1,29 @@
-<p>post-browser works!</p>
+<div class="thread">
+    <div class="header">{{ title }}</div>
+    <mat-divider></mat-divider>
+    <mat-card>
+        <div class="sideinfo">
+            <div class="author"><span [ngStyle]="is_admin ? {color : 'red'} : null">{{ author_name }}</span></div>
+            <div class="day">{{ time_created*1000 | date }}</div>
+            <div class="hour">{{ time_created*1000 | date:'HH:mm' }}</div>
+        </div>
+        <div class="content">
+            {{ content }}
+        </div>
+        <div style="clear: both;"></div>
+    </mat-card>
+    <div class="posts" *ngFor="let post of posts">
+        <mat-card>
+            <div class="sideinfo">
+                <div class="author"><span
+                        [ngStyle]="post.is_admin ? {color : 'red'} : null">{{ post.author_name }}</span></div>
+                <div class="day">{{ post.time_created*1000 | date }}</div>
+                <div class="hour">{{ post.time_created*1000 | date:'HH:mm' }}</div>
+            </div>
+            <div class="content">
+                {{ post.content }}
+            </div>
+            <div style="clear: both;"></div>
+        </mat-card>
+    </div>
+</div>

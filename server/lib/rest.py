@@ -62,7 +62,7 @@ def get_subcategory(subcategory):
 def get_thread(thread_id):
     db = get_db().cursor()
 
-    db.execute('SELECT sub_cat_id, author_id, title, threads.time_created, content, name, is_admin FROM threads JOIN accounts ON threads.author_id=accounts.id')
+    db.execute('SELECT sub_cat_id, author_id, title, threads.time_created, content, name, is_admin FROM threads JOIN accounts ON threads.author_id=accounts.id WHERE threads.id=?', (thread_id,))
     thread = list(db.fetchone())
 
     if len(thread) == 0:

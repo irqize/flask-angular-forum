@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RestService } from '../services/rest/rest.service';
 import { ActivatedRoute } from '@angular/router';
-import {
-  GetThreadResponse,
-  Thread,
-  Post,
-} from '../../interfaces/threadInterfaces';
+import { Thread, Post } from '../../interfaces/threadInterfaces';
 
 @Component({
   selector: 'app-post-browser',
