@@ -56,7 +56,7 @@ def get_subcategory(subcategory):
 
     subcategoryObj['threads'] = threads
 
-    return jsonify(subcategoryObj)
+    return jsonify({"subcategory": subcategoryObj})
 
 @app.route('/api/get_thread/<int:thread_id>')
 def get_thread(thread_id):

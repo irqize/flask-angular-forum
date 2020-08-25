@@ -5,6 +5,7 @@ import { config } from '../../../config';
 import { Observable } from 'rxjs';
 
 import { GetCategoriesResponse } from '../../../interfaces/categoryInterfaces';
+import { GetSubcategoryResponse } from '../../../interfaces/subcategoryInterfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -19,8 +20,13 @@ export class RestService {
     );
   }
 
-  getThreads(subcategory: number) {
-    return this.http.get(config.apiEndpoint + 'api/get_threads/' + subcategory);
+  getSubcategory(
+    subcategory: number
+  ): Observable<HttpResponse<GetSubcategoryResponse>> {
+    return this.http.get<GetSubcategoryResponse>(
+      config.apiEndpoint + 'api/get_subcategory/' + subcategory,
+      { observe: 'response' }
+    );
   }
 
   getPosts(thread_id: number) {

@@ -14,7 +14,6 @@ export class CategoryBrowserComponent implements OnInit {
   ngOnInit(): void {
     this.rest.getCategories().subscribe((res) => {
       this.categories = res.body.categories;
-      console.log(this.categories);
     });
   }
 }
