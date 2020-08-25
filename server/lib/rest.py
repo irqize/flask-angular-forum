@@ -45,12 +45,29 @@ def get_threads(subcategory):
 
     return jsonify({"threads" : threads})
 
-@app.route('/api/get_posts/<int:thread_id>')
+@app.route('/api/get_thread/<int:thread_id>')
 def get_posts(thread_id):
     db = get_db().cursor()
+
+    db.execute('SELECT sub_cat_id, author_id, title, threads.time_created, content, name FROM threads JOIN accounts ON threads.author_id=accounts.id')
+    thread = list(db.fetchone())
+
+    if len(thread) == 0:
+        return jsonify({"success": False}), 404
+
+    thread = {
+        "sub_cat_id": thread[0],
+        "author_id": thread[1],
+        "title": thread[2],
+        "time_created": thread[3],
+        "content": thread[4],
+        "author_name": thread[5]
+    }
 
     db.execute('SELECT posts.id, posts.content, posts.time_created, accounts.name FROM posts JOIN accounts ON author_id = accounts.id WHERE thread_id=?', (thread_id,))
     posts = list(db.fetchall())
     posts = list(map(lambda post: {"id": post[0], "content": post[1], "time_created": post[2], "author_name": post[3]}, posts))
 
-    return jsonify({"posts" : posts})
+    thread['posts'] = posts
+
+    return jsonify({"thread": thread})
