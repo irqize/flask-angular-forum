@@ -22,9 +22,8 @@ def is_authed(func):
 add_thread_schema = {
     "type": "object",
     "properties": {
-        "name" : {"$ref": "#/definitions/non-empty-string"},
-        "sub_cat_id": {"type": "integer"},
         "title" : {"$ref": "#/definitions/non-empty-string"},
+        "sub_cat_id": {"type": "integer"},
         "content": {"$ref": "#/definitions/non-empty-string"}
     },
     "definitions": {
@@ -33,7 +32,7 @@ add_thread_schema = {
             "minLength": 1
         },
     },
-    "required": ["name", "sub_cat_id", "content"]
+    "required": ["title", "sub_cat_id", "content"]
 }
 @app.route('/add_thread', methods=['POST'])
 @is_authed

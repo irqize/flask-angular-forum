@@ -5,9 +5,14 @@
         <mat-divider></mat-divider>
         <div class="description">{{ category.desc }}</div>
 
-        <mat-card matRipple *ngFor="let subcategory of category.subcategories">
-            <mat-card-title>{{ subcategory.name }}</mat-card-title>
-            <mat-card-subtitle>{{ subcategory.desc }}</mat-card-subtitle>
-        </mat-card>
+        <div *ngFor="let subcategory of category.subcategories">
+            <a [routerLink]="['/subcategory', subcategory.id]">
+                <mat-card matRipple>
+                    <mat-card-title>{{ subcategory.name }}</mat-card-title>
+                    <mat-card-subtitle class="last-child" style="margin-bottom: 0;">{{ subcategory.desc }}
+                    </mat-card-subtitle>
+                </mat-card>
+            </a>
+        </div>
     </div>
 </div>

@@ -17,6 +17,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { CategoryBrowserComponent } from './category-browser/category-browser.component';
+import { MatRippleModule } from '@angular/material/core';
 import {
   HttpClient,
   HttpHandler,
@@ -25,7 +26,12 @@ import {
 import { ThreadBrowserComponent } from './thread-browser/thread-browser.component';
 
 @NgModule({
-  declarations: [AppComponent, MainNavComponent, CategoryBrowserComponent, ThreadBrowserComponent],
+  declarations: [
+    AppComponent,
+    MainNavComponent,
+    CategoryBrowserComponent,
+    ThreadBrowserComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -39,6 +45,7 @@ import { ThreadBrowserComponent } from './thread-browser/thread-browser.componen
     MatListModule,
     HttpClientModule,
     MatCardModule,
+    MatRippleModule,
   ],
   providers: [RestService],
   bootstrap: [AppComponent],
