@@ -20,6 +20,7 @@ import { CategoryBrowserComponent } from './category-browser/category-browser.co
 import { MatRippleModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreadBrowserComponent } from './thread-browser/thread-browser.component';
+import { PostBrowserComponent } from './post-browser/post-browser.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ThreadBrowserComponent } from './thread-browser/thread-browser.componen
     MainNavComponent,
     CategoryBrowserComponent,
     ThreadBrowserComponent,
+    PostBrowserComponent,
   ],
   imports: [
     BrowserModule,

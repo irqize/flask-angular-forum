@@ -1,4 +1,4 @@
-export interface GetSubcategoryRes {
+export interface GetSubcategoryResponse {
   subcategory: Subcategory;
 }
 

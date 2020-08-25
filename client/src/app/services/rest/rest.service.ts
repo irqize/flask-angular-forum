@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 
 import { GetCategoriesResponse } from '../../../interfaces/categoryInterfaces';
 import { GetSubcategoryResponse } from '../../../interfaces/subcategoryInterfaces';
+import { GetThreadResponse } from '../../../interfaces/threadInterfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -29,7 +30,10 @@ export class RestService {
     );
   }
 
-  getPosts(thread_id: number) {
-    return this.http.get(config.apiEndpoint + 'api/get_posts/' + thread_id);
+  getThread(thread_id: number): Observable<HttpResponse<GetThreadResponse>> {
+    return this.http.get<GetThreadResponse>(
+      config.apiEndpoint + 'api/get_thread/' + thread_id,
+      { observe: 'response' }
+    );
   }
 }
