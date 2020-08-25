@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { RestService } from '../rest.service';
-import {
-  GetCategoriesResponse,
-  Category,
-  Subcategory,
-} from '../categoryInterfaces';
+import { RestService } from '../services/rest/rest.service';
+import { Category } from '../../interfaces/categoryInterfaces';
 
 @Component({
   selector: 'app-category-browser',

@@ -4,7 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { RestService } from './rest.service';
+import { RestService } from './services/rest/rest.service';
 
 import { MatSliderModule } from '@angular/material/slider';
 import { MatSidenavModule } from '@angular/material/sidenav';
@@ -18,11 +18,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatListModule } from '@angular/material/list';
 import { CategoryBrowserComponent } from './category-browser/category-browser.component';
 import { MatRippleModule } from '@angular/material/core';
-import {
-  HttpClient,
-  HttpHandler,
-  HttpClientModule,
-} from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ThreadBrowserComponent } from './thread-browser/thread-browser.component';
 
 @NgModule({
