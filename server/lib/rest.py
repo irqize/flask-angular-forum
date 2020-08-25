@@ -25,7 +25,7 @@ def get_categories():
             "name": category[1],
             "desc": category[2]
         }
-        subcs = list(filter(lambda subc: subc[0] == cat['id'], subcategories))
+        subcs = list(filter(lambda subc: subc[1] == cat['id'], subcategories))
         subcs = list(map(lambda subc: {"id": subc[0], "name": subc[2], "desc": subc[3]}, subcs))
 
         cat['subcategories'] = subcs
