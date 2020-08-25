@@ -2,6 +2,11 @@
   box-shadow: 0 0 12px 1px black;
 }
 
+a {
+  text-decoration: none;
+  color: white;
+}
+
 .sidenav {
   width: 200px;
 }

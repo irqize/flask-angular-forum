@@ -1,12 +1,16 @@
 <mat-sidenav-container class="sidenav-container">
   <mat-sidenav-content>
     <mat-toolbar color="primary">
-      <span>{{ title }}</span>
-      <div class="buttons">
+      <a [routerLink]="['']"><span>{{ title }}</span></a>
+      <div class="buttons" *ngIf="!myProfile.logged">
         <button mat-raised-button>Login</button>
         <button mat-raised-button>Register</button>
       </div>
+      <div class="buttons" *ngIf="myProfile.logged">
+        Hello, {{ myProfile.name }}
+        <button mat-raised-button>Logout</button>
+      </div>
     </mat-toolbar>
   </mat-sidenav-content>
-  
+
 </mat-sidenav-container>

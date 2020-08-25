@@ -102,7 +102,7 @@ def logout():
     return jsonify({"success": False})
     
 
-@app.route('/my_profile', methods=['POST'])
+@app.route('/my_profile', methods=['GET'])
 def my_profile():
     if 'name' not in session:
         return jsonify({"logged": False})
