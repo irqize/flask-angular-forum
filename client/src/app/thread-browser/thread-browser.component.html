@@ -1,1 +1,15 @@
-<p>thread-browser works!</p>
+<div class="categories">
+    <div class="header">{{ name }}</div>
+    <mat-divider></mat-divider>
+    <div class="description">{{ desc }}</div>
+    <div class="category" *ngFor="let thread of threads">
+        <a [routerLink]="['/thread', thread.id]">
+            <mat-card matRipple>
+                <mat-card-title>{{ thread.title }}</mat-card-title>
+                <mat-card-subtitle class="last-child" style="margin-bottom: 0;"
+                    [ngStyle]="thread.is_admin ? {color: 'red'} : null">{{ thread.author_name }} posted on
+                    {{ thread.time_created*1000 | date:'medium' }}</mat-card-subtitle>
+            </mat-card>
+        </a>
+    </div>
+</div>
