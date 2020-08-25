@@ -1,3 +1,7 @@
+.sidenav-container {
+  box-shadow: 0 0 12px 1px black;
+}
+
 .sidenav {
   width: 200px;
 }
@@ -16,6 +20,6 @@
   margin-left: auto;
 }
 
-.mat-toolbar .buttons button{
+.mat-toolbar .buttons button {
   margin-left: 10px;
 }

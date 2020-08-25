@@ -1,1 +1,13 @@
-<p>category-browser works!</p>
+<header class="primary-header">Categories</header>
+<div class="categories">
+    <div class="category" *ngFor="let category of categories">
+        <div class="header">{{ category.name }}</div>
+        <mat-divider></mat-divider>
+        <div class="description">{{ category.desc }}</div>
+
+        <mat-card matRipple *ngFor="let subcategory of category.subcategories">
+            <mat-card-title>{{ subcategory.name }}</mat-card-title>
+            <mat-card-subtitle>{{ subcategory.desc }}</mat-card-subtitle>
+        </mat-card>
+    </div>
+</div>
