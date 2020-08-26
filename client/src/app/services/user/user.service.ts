@@ -29,7 +29,7 @@ export class UserService {
     return this.myProfile.name;
   }
 
-  login(name: string, password: string): Observable<LoginResponse> {
+  login(name: string, password: string): Observable<AuthResponse> {
     return new Observable((subscriber) => {
       this.http
         .post<TokenResponse>(
@@ -46,7 +46,40 @@ export class UserService {
 
             subscriber.next({
               success: true,
-              name: this.myProfile.name,
+            });
+            subscriber.complete();
+          },
+          (error: HttpErrorResponse) => {
+            subscriber.next({
+              error: error.error.error,
+            });
+            subscriber.complete();
+          }
+        );
+    });
+  }
+
+  register(
+    name: string,
+    mail: string,
+    password: string
+  ): Observable<AuthResponse> {
+    return new Observable((subscriber) => {
+      this.http
+        .post<TokenResponse>(
+          config.apiEndpoint + 'register',
+          { name, mail, password },
+          {
+            observe: 'body',
+          }
+        )
+        .subscribe(
+          (res) => {
+            localStorage.setItem('token', res.access_token);
+            this.myProfile = parseJwt(res.access_token);
+
+            subscriber.next({
+              success: true,
             });
             subscriber.complete();
           },
@@ -88,10 +121,9 @@ interface TokenResponse {
   access_token: string;
 }
 
-export interface LoginResponse {
+export interface AuthResponse {
   error?: string;
   success?: boolean;
-  name?: string;
 }
 
 export interface MyProfile {

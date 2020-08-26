@@ -2,14 +2,18 @@
   <mat-sidenav-content>
     <mat-toolbar color="primary">
       <a [routerLink]="['']"><span>{{ title }}</span></a>
+
+
       <div class="buttons" *ngIf="!myProfile.logged">
         <button mat-raised-button (click)="showLoginPopup = true;">Login</button>
         <button mat-raised-button (click)="showRegistrationPopup = true;">Register</button>
       </div>
+
       <div class="buttons" *ngIf="myProfile.logged">
         <span>Hello, {{ myProfile.name }}</span>
         <button mat-raised-button (click)="logout();">Logout</button>
       </div>
+
     </mat-toolbar>
   </mat-sidenav-content>
 
@@ -36,6 +40,39 @@
       <div class="buttons">
         <button (click)="showLoginPopup=false;" mat-raised-button color="warn">Cancel</button>
         <button mat-raised-button color="primary" type="submit" [disabled]="!loginFormGroup.valid">Login</button>
+      </div>
+    </form>
+  </mat-card>
+</div>
+
+<div *ngIf="showRegistrationPopup" class="popupBackground">
+  <mat-card class="popupContent register">
+    <header>Login</header>
+    <form [formGroup]="registerFormGroup" (ngSubmit)="register()">
+      <mat-form-field appearance="fill">
+        <mat-label>Your Name</mat-label>
+        <input matInput placeholder="John" formControlName="name" required>
+        <mat-error *ngIf="registerFormGroup.controls.name.invalid">Your name must contain at least three charachters.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Your mail</mat-label>
+        <input matInput placeholder="john@yahoo.com" formControlName="mail" required>
+        <mat-error *ngIf="registerFormGroup.controls.mail.invalid">Your mail is incorrect.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Your password</mat-label>
+        <input matInput placeholder="John" formControlName="password" type="password" required>
+        <mat-error *ngIf="registerFormGroup.controls.password.invalid">Your password must not be empty.
+        </mat-error>
+      </mat-form-field>
+
+      <div class="buttons">
+        <button (click)="showRegistrationPopup=false;" mat-raised-button color="warn">Cancel</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!registerFormGroup.valid">Register</button>
       </div>
     </form>
   </mat-card>

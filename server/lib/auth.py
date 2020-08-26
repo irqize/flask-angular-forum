@@ -50,7 +50,7 @@ def register():
         fetched_users = db.fetchall()
         if len(fetched_users) != 0:
             db.close()
-            return jsonify({"error": "User already exists"})
+            return jsonify({"error": "User already exists"}), 400
 
         db.execute('INSERT INTO accounts (name, mail, time_created, password) VALUES (?, ?, ?, ?);', (request.json['name'], request.json['mail'], str(int(time.time())), generate_password_hash(request.json['password'])))
 

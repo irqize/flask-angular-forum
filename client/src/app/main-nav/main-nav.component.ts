@@ -38,6 +38,15 @@ export class MainNavComponent implements OnInit {
     ]),
   });
 
+  registerFormGroup = new FormGroup({
+    name: new FormControl('', [Validators.required, Validators.minLength(3)]),
+    password: new FormControl('', [
+      Validators.required,
+      Validators.minLength(1),
+    ]),
+    mail: new FormControl('', [Validators.required, Validators.email]),
+  });
+
   constructor(
     private breakpointObserver: BreakpointObserver,
     private auth: UserService,
@@ -74,10 +83,36 @@ export class MainNavComponent implements OnInit {
       });
   }
 
+  register() {
+    this.auth
+      .register(
+        this.registerFormGroup.get('name').value,
+        this.registerFormGroup.get('mail').value,
+        this.registerFormGroup.get('password').value
+      )
+      .subscribe((res) => {
+        if (res.error) {
+          this._snackBar.open(res.error, null, { duration: 3000 });
+        }
+
+        if (res.success) {
+          this.showRegistrationPopup = false;
+          this.myProfile = this.auth.getProfile();
+          this._snackBar.open('Registered successfuly.', null, {
+            duration: 3000,
+          });
+        }
+      });
+  }
+
   logout() {
     this.myProfile = {
       logged: false,
     };
+
+    this._snackBar.open('Logged out successfuly.', null, {
+      duration: 3000,
+    });
 
     this.auth.logout();
   }
