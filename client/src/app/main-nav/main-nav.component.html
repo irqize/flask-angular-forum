@@ -7,8 +7,8 @@
         <button mat-raised-button (click)="showRegistrationPopup = true;">Register</button>
       </div>
       <div class="buttons" *ngIf="myProfile.logged">
-        Hello, {{ myProfile.name }}
-        <button mat-raised-button>Logout</button>
+        <span>Hello, {{ myProfile.name }}</span>
+        <button mat-raised-button (click)="logout();">Logout</button>
       </div>
     </mat-toolbar>
   </mat-sidenav-content>
@@ -16,8 +16,8 @@
 </mat-sidenav-container>
 
 
-<div *ngIf="showLoginPopup" class="popupBackground" (click)="showLoginPopup = false;">
-  <mat-card class="popupContent" (click)="$event.stopPropagation();">
+<div *ngIf="showLoginPopup" class="popupBackground">
+  <mat-card class=" popupContent">
     <header>Login</header>
     <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
       <mat-form-field appearance="fill">
@@ -35,7 +35,7 @@
       </mat-form-field>
       <div class="buttons">
         <button (click)="showLoginPopup=false;" mat-raised-button color="warn">Cancel</button>
-        <button mat-raised-button color="primary" type="submit">Login</button>
+        <button mat-raised-button color="primary" type="submit" [disabled]="!loginFormGroup.valid">Login</button>
       </div>
     </form>
   </mat-card>

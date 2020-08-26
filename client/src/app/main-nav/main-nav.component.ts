@@ -22,6 +22,7 @@ export class MainNavComponent implements OnInit {
       map((result) => result.matches),
       shareReplay()
     );
+
   myProfile: MyProfile = {
     logged: false,
   };
@@ -44,9 +45,11 @@ export class MainNavComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.auth.checkLoginStatus().subscribe((profile) => {
-      this.myProfile = profile;
-    });
+    if (this.auth.isLoggedIn()) {
+      this.myProfile = this.auth.getProfile();
+    }
+
+    console.log(this.auth.isLoggedIn());
   }
 
   login() {
@@ -61,13 +64,21 @@ export class MainNavComponent implements OnInit {
         }
 
         if (res.success) {
-          this.auth.checkLoginStatus().subscribe((profile) => {
-            this.myProfile = profile;
-            this._snackBar.open('Logged in successfuly.', null, {
-              duration: 3000,
-            });
+          this.showLoginPopup = false;
+          this.myProfile = this.auth.getProfile();
+          console.log(this.auth.getProfile());
+          this._snackBar.open('Logged in successfuly.', null, {
+            duration: 3000,
           });
         }
       });
+  }
+
+  logout() {
+    this.myProfile = {
+      logged: false,
+    };
+
+    this.auth.logout();
   }
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { config } from '../../../config';
 
 @Injectable({
@@ -11,44 +11,87 @@ export class UserService {
     logged: false,
   };
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    if (localStorage.getItem('token')) {
+      this.myProfile = parseJwt(localStorage.getItem('token'));
+    }
+  }
 
-  checkLoginStatus(): Observable<MyProfile> {
-    return new Observable((subscriber) => {
-      this.http
-        .get<MyProfile>(config.apiEndpoint + 'my_profile', {
-          observe: 'response',
-        })
-        .subscribe((res) => {
-          this.myProfile = res.body;
+  isLoggedIn(): boolean {
+    return this.myProfile.logged;
+  }
 
-          subscriber.next(this.myProfile);
-          subscriber.complete();
-        });
-    });
+  getProfile(): MyProfile {
+    return this.myProfile;
+  }
+
+  getName(): string {
+    return this.myProfile.name;
   }
 
   login(name: string, password: string): Observable<LoginResponse> {
     return new Observable((subscriber) => {
       this.http
-        .post<LoginResponse>(
+        .post<TokenResponse>(
           config.apiEndpoint + 'login',
           { name, password },
           {
-            observe: 'response',
+            observe: 'body',
           }
         )
-        .subscribe((res) => {
-          subscriber.next(res.body);
-          subscriber.complete();
-        });
+        .subscribe(
+          (res) => {
+            localStorage.setItem('token', res.access_token);
+            this.myProfile = parseJwt(res.access_token);
+
+            subscriber.next({
+              success: true,
+              name: this.myProfile.name,
+            });
+            subscriber.complete();
+          },
+          (error: HttpErrorResponse) => {
+            subscriber.next({
+              error: error.error.error,
+            });
+            subscriber.complete();
+          }
+        );
     });
   }
+
+  logout() {
+    this.myProfile = {
+      logged: false,
+    };
+
+    localStorage.removeItem('token');
+  }
+}
+
+function parseJwt(token: string): MyProfile {
+  var base64Url = token.split('.')[1];
+  var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  var jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+      })
+      .join('')
+  );
+
+  return JSON.parse(jsonPayload)['identity'];
+}
+
+interface TokenResponse {
+  access_token: string;
 }
 
 export interface LoginResponse {
   error?: string;
-  success?: string;
+  success?: boolean;
+  name?: string;
 }
 
 export interface MyProfile {

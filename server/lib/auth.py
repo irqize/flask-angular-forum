@@ -1,4 +1,4 @@
-from flask import jsonify, request, session
+from flask import jsonify, request
 from jsonschema import validate
 import json
 import time
@@ -54,7 +54,6 @@ def register():
 
         db.execute('INSERT INTO accounts (name, mail, time_created, password) VALUES (?, ?, ?, ?);', (request.json['name'], request.json['mail'], str(int(time.time())), generate_password_hash(request.json['password'])))
 
-        session['name'] = request.json['name']
 
         db.execute("SELECT id, mail, time_created FROM accounts WHERE name=?", (request.json['name'],))
         user = db.fetchone()
@@ -62,7 +61,7 @@ def register():
         db.close()
         user = {
             "logged": True,
-            "name": session['name'],
+            "name": request.json['name'],
             "id": user[0],
             "mail": user[1],
             "time_created" : user[2]
@@ -113,7 +112,7 @@ def login():
                 db.close()
                 user = {
                     "logged": True,
-                    "name": session['name'],
+                    "name": request.json['name'],
                     "id": user[0],
                     "mail": user[1],
                     "time_created" : user[2]
@@ -125,16 +124,8 @@ def login():
                 return jsonify(access_token=access_token), 200
     return jsonify({"error": "Wrong password"}), 401
 
-@app.route('/protected', methods=['GET'])
-@jwt_required
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
-  
-
 @app.route('/my_profile', methods=['GET'])
 @jwt_required
 def my_profile():
     current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200
+    return jsonify(current_user), 200
