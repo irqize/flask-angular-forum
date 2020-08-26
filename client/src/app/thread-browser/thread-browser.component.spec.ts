@@ -1,6 +1,10 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ThreadBrowserComponent } from './thread-browser.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from '../app-routing.module';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('ThreadBrowserComponent', () => {
   let component: ThreadBrowserComponent;
@@ -8,9 +12,9 @@ describe('ThreadBrowserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ThreadBrowserComponent ]
-    })
-    .compileComponents();
+      declarations: [ThreadBrowserComponent],
+      imports: [HttpClientModule, AppRoutingModule, MatSnackBarModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { PostBrowserComponent } from './post-browser.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { AppRoutingModule } from '../app-routing.module';
+import { RouterModule } from '@angular/router';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 describe('PostBrowserComponent', () => {
   let component: PostBrowserComponent;
@@ -8,9 +13,14 @@ describe('PostBrowserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostBrowserComponent ]
-    })
-    .compileComponents();
+      declarations: [PostBrowserComponent],
+      imports: [
+        HttpClientModule,
+        AppRoutingModule,
+        RouterModule,
+        MatSnackBarModule,
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {

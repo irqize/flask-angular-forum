@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CategoryBrowserComponent } from './category-browser.component';
+import { HttpClientModule } from '@angular/common/http';
 
 describe('CategoryBrowserComponent', () => {
   let component: CategoryBrowserComponent;
@@ -8,9 +9,9 @@ describe('CategoryBrowserComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ CategoryBrowserComponent ]
-    })
-    .compileComponents();
+      declarations: [CategoryBrowserComponent],
+      imports: [HttpClientModule],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
