@@ -2,13 +2,20 @@ from flask import jsonify, request, session
 from jsonschema import validate
 import json
 import time
+import datetime
 from werkzeug.security import generate_password_hash, check_password_hash
+from flask_jwt_extended import (
+    JWTManager, jwt_required, create_access_token,
+    get_jwt_identity
+)
 
 from forum import app
 from lib.db import get_db
 
 # TODO: better input val
 # TODO: switch to better auth method
+
+jwt = JWTManager(app)
 
 # Registering
 register_schema = {
@@ -49,8 +56,25 @@ def register():
 
         session['name'] = request.json['name']
 
+        db.execute("SELECT id, mail, time_created FROM accounts WHERE name=?", (request.json['name'],))
+        user = db.fetchone()
+
         db.close()
-        return 'gut'
+        user = {
+            "logged": True,
+            "name": session['name'],
+            "id": user[0],
+            "mail": user[1],
+            "time_created" : user[2]
+        }
+
+        expires = datetime.timedelta(days=365)
+        access_token = create_access_token(identity=user, expires_delta=expires)
+
+        db.close()
+        return jsonify(success=True, access_token=access_token), 200
+
+
 
 # Logging in
 login_schema = {
@@ -77,46 +101,40 @@ def login():
         return 'Bad request', 400
     else:
         db = get_db().cursor()
-        db.execute("SELECT * FROM accounts WHERE name=?", (request.json['name'],))
+        db.execute("SELECT id, mail, time_created, password FROM accounts WHERE name=?", (request.json['name'],))
 
         users = db.fetchall()
         if len(users) == 0:
             db.close()
-            return jsonify({"error": "No user found"})
+            return jsonify({"error": "No user found"}), 401
 
         for user in users:
-            if check_password_hash(user[5], request.json['password']):
+            if check_password_hash(user[3], request.json['password']):
                 db.close()
-                session['name'] = request.json['name']
-                return jsonify({"success": True})
+                user = {
+                    "logged": True,
+                    "name": session['name'],
+                    "id": user[0],
+                    "mail": user[1],
+                    "time_created" : user[2]
+                }
         
-        return jsonify({"error": "Bad password"})
+                expires = datetime.timedelta(days=365)
+                access_token = create_access_token(identity=user, expires_delta=expires)
 
+                return jsonify(access_token=access_token), 200
+    return jsonify({"error": "Wrong password"}), 401
 
-@app.route('/logout', methods=['POST'])
-def logout():
-    if 'name' in session:
-        session.clear()
-        return jsonify({"success": True})
-
-    return jsonify({"success": False})
-    
+@app.route('/protected', methods=['GET'])
+@jwt_required
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
+  
 
 @app.route('/my_profile', methods=['GET'])
+@jwt_required
 def my_profile():
-    if 'name' not in session:
-        return jsonify({"logged": False})
-
-    db = get_db().cursor()
-
-    db.execute('SELECT id, mail, time_created FROM accounts WHERE name=?', (session['name'],))
-
-    user = db.fetchone()
-
-    return jsonify({
-        "logged": True,
-        "name": session['name'],
-        "id": user[0],
-        "mail": user[1],
-        "time_created" : user[2]
-    })
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200
