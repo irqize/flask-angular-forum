@@ -3,8 +3,8 @@
     <mat-toolbar color="primary">
       <a [routerLink]="['']"><span>{{ title }}</span></a>
       <div class="buttons" *ngIf="!myProfile.logged">
-        <button mat-raised-button>Login</button>
-        <button mat-raised-button>Register</button>
+        <button mat-raised-button (click)="showLoginPopup = true;">Login</button>
+        <button mat-raised-button (click)="showRegistrationPopup = true;">Register</button>
       </div>
       <div class="buttons" *ngIf="myProfile.logged">
         Hello, {{ myProfile.name }}
@@ -14,3 +14,29 @@
   </mat-sidenav-content>
 
 </mat-sidenav-container>
+
+
+<div *ngIf="showLoginPopup" class="popupBackground" (click)="showLoginPopup = false;">
+  <mat-card class="popupContent" (click)="$event.stopPropagation();">
+    <header>Login</header>
+    <form [formGroup]="loginFormGroup" (ngSubmit)="login()">
+      <mat-form-field appearance="fill">
+        <mat-label>Your Name</mat-label>
+        <input matInput placeholder="John" formControlName="name" required>
+        <mat-error *ngIf="loginFormGroup.controls.name.invalid">Your name must contain at least three charachters.
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Your password</mat-label>
+        <input matInput placeholder="John" formControlName="password" type="password" required>
+        <mat-error *ngIf="loginFormGroup.controls.password.invalid">Your password must contain at least three
+          charachters.
+        </mat-error>
+      </mat-form-field>
+      <div class="buttons">
+        <button (click)="showLoginPopup=false;" mat-raised-button color="warn">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Login</button>
+      </div>
+    </form>
+  </mat-card>
+</div>

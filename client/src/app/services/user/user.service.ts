@@ -27,6 +27,28 @@ export class UserService {
         });
     });
   }
+
+  login(name: string, password: string): Observable<LoginResponse> {
+    return new Observable((subscriber) => {
+      this.http
+        .post<LoginResponse>(
+          config.apiEndpoint + 'login',
+          { name, password },
+          {
+            observe: 'response',
+          }
+        )
+        .subscribe((res) => {
+          subscriber.next(res.body);
+          subscriber.complete();
+        });
+    });
+  }
+}
+
+export interface LoginResponse {
+  error?: string;
+  success?: string;
 }
 
 export interface MyProfile {

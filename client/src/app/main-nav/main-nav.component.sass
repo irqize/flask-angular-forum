@@ -1,0 +1,60 @@
+.sidenav-container
+  box-shadow: 0 0 12px 1px black
+
+a
+  text-decoration: none
+  color: white
+
+.sidenav
+  width: 200px
+
+  .mat-toolbar
+    background: inherit
+
+.mat-toolbar
+  &.mat-primary
+    position: sticky
+    top: 0
+    z-index: 1
+
+  .buttons
+    margin-left: auto
+
+    button
+      margin-left: 10px
+
+.popupBackground
+  position: fixed
+  height: 100vh
+  width: 100vw
+  top: 0
+  left: 0
+  z-index: 1000
+  background: rgba(0, 0, 0, 0.6)
+  display: flex
+  justify-content: center
+  align-items: center
+
+.popupContent
+  height: 315px
+  width: 500px
+  background: white
+
+  mat-form-field
+    box-sizing: content-box
+    margin: 20px 10px
+    width: 480px
+    height: 53px
+
+  header
+    margin: 20px 0
+    font-size: 28px
+    color: #673AB7
+    width: 100%
+    text-align: center
+
+  .buttons
+    text-align: center
+    margin-top: 20px
+    button:first-of-type
+      margin-right: 20px

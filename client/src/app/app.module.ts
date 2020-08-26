@@ -21,6 +21,9 @@ import { MatRippleModule } from '@angular/material/core';
 import { HttpClientModule } from '@angular/common/http';
 import { ThreadBrowserComponent } from './thread-browser/thread-browser.component';
 import { PostBrowserComponent } from './post-browser/post-browser.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -44,6 +47,10 @@ import { PostBrowserComponent } from './post-browser/post-browser.component';
     HttpClientModule,
     MatCardModule,
     MatRippleModule,
+    FormsModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatSnackBarModule,
   ],
   providers: [RestService],
   bootstrap: [AppComponent],
