@@ -27,3 +27,24 @@
         </mat-card>
     </div>
 </div>
+
+<button mat-fab (click)="tryAddingPost()">
+    <mat-icon>add</mat-icon>
+</button>
+
+<div *ngIf="showPopup" class="popupBackground">
+    <mat-card class="popupContent register">
+        <header>Add post</header>
+        <form [formGroup]="postFormGroup" (ngSubmit)="addPost()">
+            <mat-form-field appearance="fill">
+                <mat-label>Content</mat-label>
+                <textarea matInput formControlName="content" placeholder="It's big and red" required></textarea>
+            </mat-form-field>
+
+            <div class="buttons">
+                <button (click)="showPopup=false;" mat-raised-button color="warn">Cancel</button>
+                <button mat-raised-button color="primary" type="submit" [disabled]="!postFormGroup.valid">Add</button>
+            </div>
+        </form>
+    </mat-card>
+</div>

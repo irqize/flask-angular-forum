@@ -13,3 +13,32 @@
         </a>
     </div>
 </div>
+
+<button mat-fab (click)="tryAddingThread()">
+    <mat-icon>add</mat-icon>
+</button>
+
+<div *ngIf="showPopup" class="popupBackground">
+    <mat-card class="popupContent register">
+        <header>Create thread</header>
+        <form [formGroup]="threadFormGroup" (ngSubmit)="addThread()">
+            <mat-form-field appearance="fill">
+                <mat-label>Title</mat-label>
+                <input matInput placeholder="What is this fish?" formControlName="title" required>
+                <mat-error *ngIf="threadFormGroup.controls.title.invalid">Title is too short.
+                </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="fill">
+                <mat-label>Content</mat-label>
+                <textarea matInput formControlName="content" placeholder="It's big and red" required></textarea>
+            </mat-form-field>
+
+            <div class="buttons">
+                <button (click)="showPopup=false;" mat-raised-button color="warn">Cancel</button>
+                <button mat-raised-button color="primary" type="submit"
+                    [disabled]="!threadFormGroup.valid">Create</button>
+            </div>
+        </form>
+    </mat-card>
+</div>

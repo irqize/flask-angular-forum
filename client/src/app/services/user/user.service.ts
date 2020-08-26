@@ -1,6 +1,10 @@
 import { Injectable } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { config } from '../../../config';
 
 @Injectable({
@@ -18,6 +22,7 @@ export class UserService {
   }
 
   isLoggedIn(): boolean {
+    console.log(this.myProfile.logged);
     return this.myProfile.logged;
   }
 
@@ -100,6 +105,52 @@ export class UserService {
 
     localStorage.removeItem('token');
   }
+
+  addThread(title, sub_cat_id, content): Observable<number> {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    });
+
+    console.log({ title, sub_cat_id, content });
+
+    return new Observable((subscriber) => {
+      this.http
+        .post<addThreadResponse>(
+          config.apiEndpoint + 'add_thread',
+          { title, sub_cat_id, content },
+          {
+            observe: 'body',
+            headers,
+          }
+        )
+        .subscribe((res) => {
+          subscriber.next(res.thread_id);
+          subscriber.complete();
+        });
+    });
+  }
+
+  addPost(thread_id, content): Observable<number> {
+    const headers = new HttpHeaders({
+      Authorization: 'Bearer ' + localStorage.getItem('token'),
+    });
+
+    return new Observable((subscriber) => {
+      this.http
+        .post<addPostResponse>(
+          config.apiEndpoint + 'add_post',
+          { thread_id, content },
+          {
+            observe: 'body',
+            headers,
+          }
+        )
+        .subscribe((res) => {
+          subscriber.next(res.post_id);
+          subscriber.complete();
+        });
+    });
+  }
 }
 
 function parseJwt(token: string): MyProfile {
@@ -115,6 +166,18 @@ function parseJwt(token: string): MyProfile {
   );
 
   return JSON.parse(jsonPayload)['identity'];
+}
+
+interface addThreadResponse {
+  error?: string;
+  success?: boolean;
+  thread_id: number;
+}
+
+interface addPostResponse {
+  error?: string;
+  success?: boolean;
+  post_id: number;
 }
 
 interface TokenResponse {
